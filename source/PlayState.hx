@@ -12,6 +12,7 @@ import flixel.util.FlxMath;
  */
 class PlayState extends FlxState
 {
+  private var _hud:HUD;
   private var _player:Player;
   private var _platformGroup:PlatformGroup;
 
@@ -21,6 +22,9 @@ class PlayState extends FlxState
   override public function create():Void
   {
     FlxG.mouse.visible = false;
+
+    _hud = new HUD();
+    add(_hud);
 
     _player = new Player(80, 200);
     add(_player);

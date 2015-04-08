@@ -29,9 +29,19 @@ class Player extends FlxSprite
   override public function update():Void
   {
     movement();
+    if (alive)
+    {
+      if (shouldBeDead())
+      {
+        kill();
+      }
+      else
+      {
+        Reg.score += 1;
+      }
+    }
     if (outOfBounds())
     {
-      this.kill();
       this.reset(initX, initY);
     }
     super.update();
@@ -47,6 +57,11 @@ class Player extends FlxSprite
     super.reset(X, Y);
     this.velocity.y = 0;
     this.velocity.x = 0;
+  }
+
+  private function shouldBeDead():Bool
+  {
+    return outOfBounds() || isTouching(flixel.FlxObject.RIGHT);
   }
 
   private function movement():Void
