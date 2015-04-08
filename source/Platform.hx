@@ -24,7 +24,7 @@ class Platform extends FlxSprite
 
   override public function update():Void
   {
-    if (x < 0 - 128)
+    if (x < 0 - 256)
     {
       this.exists = false;
     }

@@ -2,6 +2,8 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.FlxObject;
+import flixel.util.FlxPoint;
 import flixel.util.FlxColor;
 import flixel.input.touch.FlxTouch;
 
@@ -9,6 +11,8 @@ class Player extends FlxSprite
 {
   var initX:Float;
   var initY:Float;
+
+  var lastVelocity:FlxPoint;
 
   var GRAVITY:Int = 800;
   var JUMP_SPEED:Int = -400;
@@ -19,6 +23,8 @@ class Player extends FlxSprite
     initX = X;
     initY = Y;
 
+    lastVelocity = new FlxPoint(0, 0);
+
     makeGraphic(16, 16, FlxColor.BLUE);
     solid = true;
     collisonXDrag = false;
@@ -28,6 +34,7 @@ class Player extends FlxSprite
 
   override public function update():Void
   {
+    animateCollision();
     movement();
     if (alive)
     {
@@ -55,13 +62,13 @@ class Player extends FlxSprite
   override public function reset(X:Float, Y:Float):Void
   {
     super.reset(X, Y);
-    this.velocity.y = 0;
-    this.velocity.x = 0;
+    velocity.set(0, 0);
+    lastVelocity.copyFrom(velocity);
   }
 
   private function shouldBeDead():Bool
   {
-    return outOfBounds() || isTouching(flixel.FlxObject.RIGHT);
+    return outOfBounds() || isTouching(FlxObject.RIGHT);
   }
 
   private function movement():Void
@@ -77,10 +84,22 @@ class Player extends FlxSprite
       this.velocity.y = JUMP_SPEED;
     }
 
+    lastVelocity.copyFrom(velocity);
   }
 
   private function outOfBounds():Bool
   {
     return this.y > 500 || this.y < -50;
+  }
+
+  private function animateCollision():Void
+  {
+    var shakeAmount = Math.abs(lastVelocity.y - velocity.y)/30000
+                    + Math.abs(lastVelocity.x - velocity.x)/30000;
+
+    if (shakeAmount > 0.01 && justTouched(FlxObject.ANY))
+    {
+      FlxG.camera.shake(shakeAmount, 0.1);
+    }
   }
 }
