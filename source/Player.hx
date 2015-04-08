@@ -12,7 +12,6 @@ class Player extends FlxSprite
 
   var GRAVITY:Int = 800;
   var JUMP_SPEED:Int = -400;
-  var DRAG:Int = 200;
 
   public function new(X:Float=0, Y:Float=0)
   {
@@ -22,16 +21,32 @@ class Player extends FlxSprite
 
     makeGraphic(16, 16, FlxColor.BLUE);
     solid = true;
+    collisonXDrag = false;
 
-    drag.x = drag.y = DRAG;
     acceleration.y = GRAVITY;
   }
 
   override public function update():Void
   {
     movement();
-    checkDeath();
+    if (outOfBounds())
+    {
+      this.kill();
+      this.reset(initX, initY);
+    }
     super.update();
+  }
+
+  override public function kill():Void
+  {
+    this.alive = false;
+  }
+
+  override public function reset(X:Float, Y:Float):Void
+  {
+    super.reset(X, Y);
+    this.velocity.y = 0;
+    this.velocity.x = 0;
   }
 
   private function movement():Void
@@ -49,13 +64,8 @@ class Player extends FlxSprite
 
   }
 
-  private function checkDeath():Void
+  private function outOfBounds():Bool
   {
-    if (this.y > 500)
-    {
-      this.x = initX;
-      this.y = initY;
-      this.velocity.y = 0;
-    }
+    return this.y > 500 || this.y < -50;
   }
 }

@@ -6,7 +6,7 @@ import flixel.util.FlxColor;
 
 class Platform extends FlxSprite
 {
-  var SCROLL_SPEED:Int = 5;
+  public static var SCROLL_VELOCITY:Int = -300;
 
   public static var DEFAULT_X:Int = 80;
   public static var DEFAULT_Y:Int = 216;
@@ -16,14 +16,14 @@ class Platform extends FlxSprite
     if (x == null) { x = 0; }
     if (y == null) { y = DEFAULT_Y; }
     super(x, y);
-    makeGraphic(128, 16, FlxColor.WHITE);
+    makeGraphic(128, 512, FlxColor.WHITE);
     solid = true;
     immovable = true;
+    velocity.x = SCROLL_VELOCITY;
   }
 
   override public function update():Void
   {
-    x -= this.SCROLL_SPEED;
     if (x < 0 - 128)
     {
       this.exists = false;

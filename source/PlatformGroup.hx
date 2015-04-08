@@ -56,7 +56,7 @@ class PlatformGroup extends FlxTypedGroup<Platform>
     var nextPlatform = makeOrRecyclePlatform();
 
     nextPlatform.y = Platform.DEFAULT_Y;
-    nextPlatform.x = lastPlatform.x + 128;
+    nextPlatform.x = lastPlatform.x + 128 - 1; // 1px gap sometimes
 
     if (!useDefaults)
     {
