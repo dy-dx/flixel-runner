@@ -3,6 +3,7 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
+import flixel.input.touch.FlxTouch;
 
 class Player extends FlxSprite
 {
@@ -43,9 +44,12 @@ class Player extends FlxSprite
     var _right:Bool = false;
 
     _up    = FlxG.keys.anyPressed(["UP", "W"]);
-    _down  = FlxG.keys.anyPressed(["DOWN", "S"]);
-    _left  = FlxG.keys.anyPressed(["LEFT", "A"]);
-    _right = FlxG.keys.anyPressed(["RIGHT", "D"]);
+    // _down  = FlxG.keys.anyPressed(["DOWN", "S"]);
+    // _left  = FlxG.keys.anyPressed(["LEFT", "A"]);
+    // _right = FlxG.keys.anyPressed(["RIGHT", "D"]);
+
+    var touched:FlxTouch = FlxG.touches.getFirst();
+    _up = _up || (touched != null);
 
     if (_up && isTouching(flixel.FlxObject.FLOOR))
     {
