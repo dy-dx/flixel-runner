@@ -23,6 +23,8 @@ class PlayState extends FlxState
    */
   override public function create():Void
   {
+    FlxG.mouse.visible = false;
+
     _player = new Player(80, 200);
     add(_player);
 
@@ -64,7 +66,7 @@ class PlayState extends FlxState
     var upperH = 216 - 64;
 
     var lastPlatform:Platform = platforms.members[platforms.length-1];
-    if (lastPlatform.x > 400)
+    if (lastPlatform.x > 700)
     {
       return;
     }
