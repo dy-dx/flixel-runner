@@ -13,6 +13,7 @@ import flixel.util.FlxMath;
 class PlayState extends FlxState
 {
   private var _player:Player;
+  private var _platform:Platform;
 
   /**
    * Function that is called up when to state is created to set it up.
@@ -21,6 +22,10 @@ class PlayState extends FlxState
   {
     _player = new Player(80, 200);
     add(_player);
+
+    _platform = new Platform(80, 216);
+    add(_platform);
+
     super.create();
   }
 
@@ -39,5 +44,6 @@ class PlayState extends FlxState
   override public function update():Void
   {
     super.update();
+    FlxG.collide(_player, _platform);
   }
 }

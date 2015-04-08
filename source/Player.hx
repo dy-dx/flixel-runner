@@ -6,13 +6,20 @@ import flixel.util.FlxColor;
 
 class Player extends FlxSprite
 {
-  public var speed:Float = 8;
+  public var speed:Float = 4;
+
+  var GRAVITY:Int = 800;
+  var JUMP_SPEED:Int = -300;
+  var DRAG:Int = 200;
 
   public function new(X:Float=0, Y:Float=0)
   {
     super(X, Y);
     makeGraphic(16, 16, FlxColor.BLUE);
-    drag.x = drag.y = 1600;
+    solid = true;
+
+    drag.x = drag.y = DRAG;
+    acceleration.y = GRAVITY;
   }
 
   override public function update():Void
@@ -33,19 +40,9 @@ class Player extends FlxSprite
     _left  = FlxG.keys.anyPressed(["LEFT", "A"]);
     _right = FlxG.keys.anyPressed(["RIGHT", "D"]);
 
-    // todo: cancel out if 2 opposing keys are pressed at the same time
-
-    // todo: prevent diagonal motion from moving player 2x as fast
-
-    var vX:Float = 0;
-    var vY:Float = 0;
-    if (_up)
+    if (_up && isTouching(flixel.FlxObject.FLOOR))
     {
-      this.y += -speed;
-    }
-    else if (_down)
-    {
-      this.y += speed;
+      this.velocity.y = JUMP_SPEED;
     }
 
     if (_left)
