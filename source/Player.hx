@@ -111,8 +111,6 @@ class Player extends FlxSprite
       // Emit particles proportionally to the y impact
       var numParticles = 8 + Math.floor(Math.min(30, shakeY*1000));
 
-      trace(numParticles);
-
       var period = 0.08;
       var frequency = period / numParticles;
 
