@@ -3,9 +3,12 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.group.FlxGroup;
+import flixel.group.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
+import flixel.util.FlxRandom;
 
 /**
  * A FlxState which can be used for the actual gameplay.
@@ -13,7 +16,7 @@ import flixel.util.FlxMath;
 class PlayState extends FlxState
 {
   private var _player:Player;
-  private var _platform:Platform;
+  private var platforms:FlxTypedGroup<Platform>;
 
   /**
    * Function that is called up when to state is created to set it up.
@@ -23,8 +26,15 @@ class PlayState extends FlxState
     _player = new Player(80, 200);
     add(_player);
 
-    _platform = new Platform(80, 216);
-    add(_platform);
+    platforms = new FlxTypedGroup();
+    platforms.maxSize = 20;
+
+    var platform = new Platform(80, 216);
+    var platform2 = new Platform(80+128, 216);
+    platforms.add(platform);
+    platforms.add(platform2);
+
+    add(platforms);
 
     super.create();
   }
@@ -44,6 +54,45 @@ class PlayState extends FlxState
   override public function update():Void
   {
     super.update();
-    FlxG.collide(_player, _platform);
+    addPlatform();
+    FlxG.collide(_player, platforms);
+  }
+
+  function addPlatform():Void
+  {
+    var lowerH = 216;
+    var upperH = 216 - 64;
+
+    var lastPlatform:Platform = platforms.members[platforms.length-1];
+    if (lastPlatform.x > 400)
+    {
+      return;
+    }
+
+    var platform:Platform = platforms.getFirstAvailable(Platform, true);
+    if (platform != null)
+    {
+      platforms.remove(platform, true);
+      platform.exists = true;
+    }
+    else
+    {
+      platform = new Platform();
+    }
+
+    platform.y = lowerH;
+    platform.x = lastPlatform.x + 128;
+
+    if (FlxRandom.float() < 0.25)
+    {
+      platform.y = upperH;
+    }
+
+    if (FlxRandom.float() < 0.1)
+    {
+      platform.x += 128;
+    }
+
+    platforms.add(platform);
   }
 }
