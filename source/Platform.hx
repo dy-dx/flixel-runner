@@ -6,11 +6,16 @@ import flixel.util.FlxColor;
 
 class Platform extends FlxSprite
 {
-  var SCROLL_SPEED:Int = 4;
+  var SCROLL_SPEED:Int = 5;
 
-  public function new(X:Float=0, Y:Float=0)
+  public static var DEFAULT_X:Int = 80;
+  public static var DEFAULT_Y:Int = 216;
+
+  public function new(?x:Int, ?y:Int)
   {
-    super(X, Y);
+    if (x == null) { x = 0; }
+    if (y == null) { y = DEFAULT_Y; }
+    super(x, y);
     makeGraphic(128, 16, FlxColor.WHITE);
     solid = true;
     immovable = true;

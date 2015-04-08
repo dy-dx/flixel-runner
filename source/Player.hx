@@ -7,8 +7,6 @@ import flixel.input.touch.FlxTouch;
 
 class Player extends FlxSprite
 {
-  public var speed:Float = 4;
-
   var initX:Float;
   var initY:Float;
 
@@ -38,17 +36,10 @@ class Player extends FlxSprite
 
   private function movement():Void
   {
-    var _up:Bool = false;
-    var _down:Bool = false;
-    var _left:Bool = false;
-    var _right:Bool = false;
-
-    _up    = FlxG.keys.anyPressed(["UP", "W"]);
-    // _down  = FlxG.keys.anyPressed(["DOWN", "S"]);
-    // _left  = FlxG.keys.anyPressed(["LEFT", "A"]);
-    // _right = FlxG.keys.anyPressed(["RIGHT", "D"]);
+    var _up:Bool = FlxG.keys.anyPressed(["UP", "W", "SPACE"]);
 
     var touched:FlxTouch = FlxG.touches.getFirst();
+
     _up = _up || (touched != null);
 
     if (_up && isTouching(flixel.FlxObject.FLOOR))
@@ -56,14 +47,6 @@ class Player extends FlxSprite
       this.velocity.y = JUMP_SPEED;
     }
 
-    // if (_left)
-    // {
-    //   this.x += -speed;
-    // }
-    // else if (_right)
-    // {
-    //   this.x += speed;
-    // }
   }
 
   private function checkDeath():Void
