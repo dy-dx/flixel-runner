@@ -13,8 +13,9 @@ import flixel.util.FlxMath;
 class PlayState extends FlxState
 {
   private var _hud:HUD;
-  private var _player:Player;
   private var _platformGroup:PlatformGroup;
+  private var _player:Player;
+  private var _dustEmitter:DustEmitter;
 
   /**
    * Function that is called up when to state is created to set it up.
@@ -23,14 +24,19 @@ class PlayState extends FlxState
   {
     FlxG.mouse.visible = false;
 
-    _hud = new HUD();
-    add(_hud);
+    _dustEmitter = new DustEmitter();
 
     _player = new Player(80, 200);
+    _player.dustEmitter = _dustEmitter;
     add(_player);
+
+    add(_dustEmitter);
 
     _platformGroup = new PlatformGroup();
     add(_platformGroup);
+
+    _hud = new HUD();
+    add(_hud);
 
     super.create();
   }

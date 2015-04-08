@@ -17,6 +17,8 @@ class Player extends FlxSprite
   var GRAVITY:Int = 800;
   var JUMP_SPEED:Int = -400;
 
+  public var dustEmitter:DustEmitter;
+
   public function new(X:Float=0, Y:Float=0)
   {
     super(X, Y);
@@ -94,12 +96,27 @@ class Player extends FlxSprite
 
   private function animateCollision():Void
   {
-    var shakeAmount = Math.abs(lastVelocity.y - velocity.y)/30000
-                    + Math.abs(lastVelocity.x - velocity.x)/30000;
+    var shakeY = Math.abs(lastVelocity.y - velocity.y)/30000;
+    var shakeAmount = shakeY + Math.abs(lastVelocity.x - velocity.x)/30000;
 
     if (shakeAmount > 0.01 && justTouched(FlxObject.ANY))
     {
       FlxG.camera.shake(shakeAmount, 0.1);
+    }
+
+    if (justTouched(FlxObject.FLOOR) && dustEmitter != null)
+    {
+      dustEmitter.x = x+8;
+      dustEmitter.y = y+15;
+      // Emit particles proportionally to the y impact
+      var numParticles = 8 + Math.floor(Math.min(30, shakeY*1000));
+
+      trace(numParticles);
+
+      var period = 0.08;
+      var frequency = period / numParticles;
+
+      dustEmitter.start(false, 1.5, frequency, numParticles);
     }
   }
 }
