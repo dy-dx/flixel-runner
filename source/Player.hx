@@ -68,6 +68,16 @@ class Player extends FlxSprite
     lastVelocity.copyFrom(velocity);
   }
 
+  public function touchCoin(P:Player, C:Coin)
+  {
+    if (P.alive && P.exists && C.alive && C.exists)
+    {
+      Reg.score += 1000;
+      C.kill();
+    }
+
+  }
+
   private function shouldBeDead():Bool
   {
     return outOfBounds() || isTouching(FlxObject.RIGHT);
